@@ -1,6 +1,8 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:movie_flutter_application/core/auth/login/view/login_view.dart';
 import 'package:movie_flutter_application/core/main/view/main_view.dart';
+import 'package:movie_flutter_application/core/splash/splash_view.dart';
 
 import 'firebase_options.dart';
 
@@ -24,7 +26,7 @@ class MyApp extends StatelessWidget {
 
         primarySwatch: Colors.blue,
       ),
-      home: const MainView()
+      home: const LoginView()
     );
   }
 }
