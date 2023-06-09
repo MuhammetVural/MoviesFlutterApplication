@@ -78,11 +78,11 @@ Future readDataAndSetDataLocally(User currentUser) async {
       sharedPreferences = await SharedPreferences.getInstance();
       await sharedPreferences!.setString("uid", currentUser.uid);
       await sharedPreferences!
-          .setString("email", snapshot.data()!["sellerEmail"]);
+          .setString("email", snapshot.data()!["userEmail"]);
       await sharedPreferences!
-          .setString("name", snapshot.data()!["sellerName"]);
+          .setString("name", snapshot.data()!["userName"]);
       await sharedPreferences!
-          .setString("photoUrl", snapshot.data()!["sellerAvatarUrl"]);
+          .setString("photoUrl", snapshot.data()!["userAvatarUrl"]);
       Navigator.push(
           context, MaterialPageRoute(builder: (c) => MainView()));
     } else {
