@@ -7,16 +7,16 @@ import '../../extensions/global.dart';
 
 
 
-class MySplashScreen extends StatefulWidget {
-  const MySplashScreen({Key? key}) : super(key: key);
+class SplashView extends StatefulWidget {
+  const SplashView({Key? key}) : super(key: key);
 
   @override
-  State<MySplashScreen> createState() => _MySplashScreenState();
+  State<SplashView> createState() => _SplashViewState();
 }
 
-class _MySplashScreenState extends State<MySplashScreen> {
+class _SplashViewState extends State<SplashView> {
   startTimer() {
-    Timer(const Duration(seconds: 5), () async {
+    Timer(const Duration(seconds: 3), () async {
       if (fAuth.currentUser != null) {
         Navigator.push(context, MaterialPageRoute(builder: (c) => const MainView()));
       } else {
@@ -44,8 +44,8 @@ class _MySplashScreenState extends State<MySplashScreen> {
             children: [
               Image.asset(
                 "assets/images/movie_logo.png",
-                width: 219,
-                height: 182,
+                width: 119,
+                
               ),
               const SizedBox(
                 height: 10,
