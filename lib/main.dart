@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:movie_flutter_application/core/auth/login/view/login_view.dart';
+import 'package:movie_flutter_application/core/auth/register/view/register_view.dart';
 import 'package:movie_flutter_application/core/main/view/main_view.dart';
 import 'package:movie_flutter_application/core/splash/splash_view.dart';
 
@@ -21,12 +22,15 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: ThemeData(
+        
 
         primarySwatch: Colors.blue,
+        
       ),
-      home: const LoginView()
+      home: const RegisterView()
     );
   }
 }

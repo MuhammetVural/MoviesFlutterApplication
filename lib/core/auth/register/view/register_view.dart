@@ -14,6 +14,7 @@ import '../../../../extensions/global.dart';
 import '../../../../extensions/widgets/error_dialog.dart';
 import '../../../../extensions/widgets/loading_dialog.dart';
 import '../../../../extensions/widgets/reuseable_widget.dart';
+import '../../login/view/login_view.dart';
 
 
 
@@ -161,60 +162,66 @@ class _RegisterViewState extends State<RegisterView> {
               20, MediaQuery.of(context).size.height * 0.12, 20, 0),
           child: Column(
             children: <Widget>[
+              // InkWell(
+              //   onTap: () {
+              //     _getImage();
+              //   },
+              //   child: CircleAvatar(
+              //     radius: MediaQuery.of(context).size.width * 0.20,
+              //     backgroundColor: Colors.black12,
+              //     backgroundImage: imageXFile == null
+              //         ? null
+              //         : FileImage(File(imageXFile!.path)),
+              //     child: imageXFile == null
+              //         ? Icon(
+              //             Icons.add_photo_alternate,
+              //             size: MediaQuery.of(context).size.width * 0.20,
+              //             color: Colors.grey,
+              //           )
+              //         : null,
+              //   ),
+              // ),
+              Text("Create new", style: TextStyle(fontSize: 38, fontWeight: FontWeight.w500),),
+              Text("Account", style: TextStyle(fontSize: 38, fontWeight: FontWeight.w500),),
+              const SizedBox(height: 30),
               InkWell(
-                onTap: () {
-                  _getImage();
-                },
-                child: CircleAvatar(
-                  radius: MediaQuery.of(context).size.width * 0.20,
-                  backgroundColor: Colors.black12,
-                  backgroundImage: imageXFile == null
-                      ? null
-                      : FileImage(File(imageXFile!.path)),
-                  child: imageXFile == null
-                      ? Icon(
-                          Icons.add_photo_alternate,
-                          size: MediaQuery.of(context).size.width * 0.20,
-                          color: Colors.grey,
-                        )
-                      : null,
-                ),
-              ),
-              SizedBox(height: 30),
+                onTap: (){Navigator.push(
+            context, MaterialPageRoute(builder: (c) => const LoginView()));},
+                child: Text("Already Registered? Log in here.", style: TextStyle(fontSize: 20, fontWeight: FontWeight.w400),)),
+              
+              SizedBox(height: 20),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                Text("Name", style: TextStyle(fontSize: 20, fontWeight: FontWeight.w400),),
+                   const SizedBox(height: 10),
               reuseableTextField('User Name', false, true,
                   _userNameTextController),
-              SizedBox(height: 20),
+              SizedBox(height: 15),
+              Text("Email", style: TextStyle(fontSize: 20, fontWeight: FontWeight.w400),),
+                   const SizedBox(height: 10),
               reuseableTextField(
                   'E-Mail', false, true, _emailTextController),
-              SizedBox(height: 20),
+              SizedBox(height: 15),
+              Text("Password", style: TextStyle(fontSize: 20, fontWeight: FontWeight.w400),),
+                   const SizedBox(height: 10),
               reuseableTextField(
                   'Password',  true, true, _passwordTextController),
-              SizedBox(height: 40),
+                  SizedBox(height: 15),
+                  Text("Date of Birth", style: TextStyle(fontSize: 20, fontWeight: FontWeight.w400),),
+                   const SizedBox(height: 10),
+                   reuseableTextField2(
+                  'Date of Birth', Icons.date_range,  false, true, _passwordTextController),
+              SizedBox(height: 10),
+              
               signInSignOutButton(context, false, () {
                 formValidation();
 
-                // FirebaseAuth.instance
-                //     .createUserWithEmailAndPassword(
-                //     email: _emailTextController.text,
-                //     password: _passwordTextController.text)
-                //     .then((value) {
-                //   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                //     content: Text('Created New Account'),
-                //   ));
-                //   print("Created New Account");
-                //
-                //   Navigator.push(
-                //       context,
-                //       MaterialPageRoute(
-                //           builder: (context) => const HomeScreen()));
-                // }).onError((error, stackTrace) {
-                //   print("Error ${error.toString()}");
-                //   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                //     content: Text('Error ${error.toString()}'),
-                //   ));
-                // }
-                //  );
+              
               }),
+
+              ],)
+              
             ],
           ),
         ),
