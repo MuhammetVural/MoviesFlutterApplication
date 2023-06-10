@@ -49,21 +49,22 @@ TextField reuseableTextField2(String text, IconData icon, bool isPasswordType, b
     enabled: isEnabled,
     enableSuggestions: isPasswordType,
     autocorrect: isPasswordType,
-    cursorColor: Colors.grey,
+    cursorColor: Colors.black,
     style: TextStyle(color: Colors.black54.withOpacity(0.8)),
     decoration: InputDecoration(
-      prefixIcon: Icon(
+      
+      suffixIcon: Icon(
         icon,
-        color: Colors.black26,
+        color: Colors.black,
       ),
       labelText: text,
       labelStyle: TextStyle(color: Colors.grey.withOpacity(0.7)),
       filled: true,
       floatingLabelBehavior: FloatingLabelBehavior.never,
-      fillColor: Colors.blueAccent.withOpacity(0.1),
+      fillColor: Colors.white,
       border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(20.0),
-          borderSide: const BorderSide(width: 0, style: BorderStyle.none)),
+          borderRadius: BorderRadius.circular(1.0),
+          borderSide: const BorderSide(width: 1, style: BorderStyle.none)),
     ),
     keyboardType: isPasswordType
         ? TextInputType.visiblePassword
@@ -83,7 +84,7 @@ Container signInSignOutButton(BuildContext context, bool isLogin,
         .width,
     height: 55,
     margin: EdgeInsets.fromLTRB(0, 10, 0, 20),
-    decoration: BoxDecoration(borderRadius: BorderRadius.circular(20.0)),
+    decoration: BoxDecoration(borderRadius: BorderRadius.circular(2.0)),
     child: ElevatedButton(
       onPressed: () {
         onTap();
@@ -101,7 +102,7 @@ Container signInSignOutButton(BuildContext context, bool isLogin,
             return Colors.black;
           }),
           shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)))),
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(2)))),
     ),
   );
 }

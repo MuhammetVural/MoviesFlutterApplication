@@ -154,7 +154,7 @@ Row signUpOption(BuildContext context) {
     mainAxisAlignment: MainAxisAlignment.center,
     children: [
       Text(
-        "Hesabınız yok mu? ",
+        "You don't have any account? ",
         style: TextStyle(color: Colors.black),
       ),
       GestureDetector(
@@ -163,7 +163,7 @@ Row signUpOption(BuildContext context) {
               context, MaterialPageRoute(builder: (context) => const RegisterView()));
         },
         child: Text(
-          "Kayıt ol",
+          "Sign up",
           style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
         ),
       ),
