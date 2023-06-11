@@ -16,10 +16,6 @@ import '../../../../extensions/widgets/loading_dialog.dart';
 import '../../../../extensions/widgets/reuseable_widget.dart';
 import '../../login/view/login_view.dart';
 
-
-
-
-
 class RegisterView extends StatefulWidget {
   const RegisterView({Key? key}) : super(key: key);
 
@@ -31,72 +27,70 @@ class _RegisterViewState extends State<RegisterView> {
   TextEditingController _passwordTextController = TextEditingController();
   TextEditingController _emailTextController = TextEditingController();
   TextEditingController _userNameTextController = TextEditingController();
+  TextEditingController _dateTextController = TextEditingController();
 
-  XFile? imageXFile;
-  final ImagePicker _picker = ImagePicker();
+  //XFile? imageXFile;
+  // final ImagePicker _picker = ImagePicker();
 
-
-  String sellerImageUrl = "";
+  // String sellerImageUrl = "";
   String completeAddress = "";
 
-  Future<void> _getImage() async {
-    imageXFile = await _picker.pickImage(source: ImageSource.gallery);
+  // Future<void> _getImage() async {
+  //   imageXFile = await _picker.pickImage(source: ImageSource.gallery);
 
-    setState(() {
-      imageXFile;
-    });
-  }
-
+  //   setState(() {
+  //     imageXFile;
+  //   });
+  // }
 
   Future<void> formValidation() async {
-    if (imageXFile == null) {
+    // if (imageXFile == null) {
+    //   showDialog(
+    //       context: context,
+    //       builder: (c) {
+    //         return const ErrorDialog(
+    //           message: "Please select an image",
+    //         );
+    //       });
+    // }
+    // else {
+    if (_passwordTextController.text.isNotEmpty &&
+        _emailTextController.text.isNotEmpty &&
+        _userNameTextController.text.isNotEmpty) {
+      showDialog(
+          context: context,
+          builder: (c) {
+            {
+              return const LoadingDialog(
+                message: "Registering Account",
+              );
+            }
+          });
+      authenticateSellerAndSignUp();
+
+      // String fileName = DateTime.now().microsecondsSinceEpoch.toString();
+      // fStorage.Reference reference = fStorage.FirebaseStorage.instance
+      //     .ref()
+      //     .child('users')
+      //     .child(fileName);
+      // fStorage.UploadTask uploadTask =
+      //     reference.putFile(File(imageXFile!.path));
+      // fStorage.TaskSnapshot taskSnapshot =
+      //     await uploadTask.whenComplete(() {});
+      // await taskSnapshot.ref.getDownloadURL().then((url) {
+      //   sellerImageUrl = url;
+      //   authenticateSellerAndSignUp();
+      // });
+    } else {
       showDialog(
           context: context,
           builder: (c) {
             return const ErrorDialog(
-              message: "Please select an image",
+              message: "Please write complete required full info",
             );
           });
-    } else {
-      if (_passwordTextController.text.isNotEmpty &&
-          
-          _emailTextController.text.isNotEmpty &&
-          _userNameTextController.text.isNotEmpty) {
-        showDialog(
-            context: context,
-            builder: (c) {
-              {
-                return const LoadingDialog(
-                  message: "Registering Account",
-                );
-              }
-            });
-
-
-
-        String fileName = DateTime.now().microsecondsSinceEpoch.toString();
-        fStorage.Reference reference = fStorage.FirebaseStorage.instance
-            .ref()
-            .child('users')
-            .child(fileName);
-        fStorage.UploadTask uploadTask =
-            reference.putFile(File(imageXFile!.path));
-        fStorage.TaskSnapshot taskSnapshot =
-            await uploadTask.whenComplete(() {});
-        await taskSnapshot.ref.getDownloadURL().then((url) {
-          sellerImageUrl = url;
-          authenticateSellerAndSignUp();
-        });
-      } else {
-        showDialog(
-            context: context,
-            builder: (c) {
-              return const ErrorDialog(
-                message: "Please write complete required full info",
-              );
-            });
-      }
     }
+    // }
   }
 
   void authenticateSellerAndSignUp() async {
@@ -135,10 +129,8 @@ class _RegisterViewState extends State<RegisterView> {
       "userUID": currentUser.uid,
       "userEmail": currentUser.email,
       "userName": _userNameTextController.text.trim(),
-      "userAvatarUrl": sellerImageUrl,
+      //"userAvatarUrl": sellerImageUrl,
       "status": "approved",
-
-
     });
 
     //save data locally
@@ -147,7 +139,7 @@ class _RegisterViewState extends State<RegisterView> {
     await sharedPreferences!.setString("email", currentUser.email.toString());
     await sharedPreferences!
         .setString("name", _userNameTextController.text.trim());
-    await sharedPreferences!.setString("photoUrl", sellerImageUrl);
+    // await sharedPreferences!.setString("photoUrl", sellerImageUrl);
   }
 
   @override
@@ -181,47 +173,65 @@ class _RegisterViewState extends State<RegisterView> {
               //         : null,
               //   ),
               // ),
-              Text("Create new", style: TextStyle(fontSize: 38, fontWeight: FontWeight.w500),),
-              Text("Account", style: TextStyle(fontSize: 38, fontWeight: FontWeight.w500),),
+              Text(
+                "Create new",
+                style: TextStyle(fontSize: 38, fontWeight: FontWeight.w500),
+              ),
+              Text(
+                "Account",
+                style: TextStyle(fontSize: 38, fontWeight: FontWeight.w500),
+              ),
               const SizedBox(height: 30),
               InkWell(
-                onTap: (){Navigator.push(
-            context, MaterialPageRoute(builder: (c) => const LoginView()));},
-                child: Text("Already Registered? Log in here.", style: TextStyle(fontSize: 20, fontWeight: FontWeight.w400),)),
-              
+                  onTap: () {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (c) => const LoginView()));
+                  },
+                  child: Text(
+                    "Already Registered? Log in here.",
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.w400),
+                  )),
+
               SizedBox(height: 20),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                Text("Name", style: TextStyle(fontSize: 20, fontWeight: FontWeight.w400),),
-                   const SizedBox(height: 10),
-              reuseableTextField('User Name', false, true,
-                  _userNameTextController),
-              SizedBox(height: 15),
-              Text("Email", style: TextStyle(fontSize: 20, fontWeight: FontWeight.w400),),
-                   const SizedBox(height: 10),
-              reuseableTextField(
-                  'E-Mail', false, true, _emailTextController),
-              SizedBox(height: 15),
-              Text("Password", style: TextStyle(fontSize: 20, fontWeight: FontWeight.w400),),
-                   const SizedBox(height: 10),
-              reuseableTextField(
-                  'Password',  true, true, _passwordTextController),
+                  Text(
+                    "Name",
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.w400),
+                  ),
+                  const SizedBox(height: 10),
+                  reuseableTextField(
+                      'User Name', false, true, _userNameTextController),
                   SizedBox(height: 15),
-                  Text("Date of Birth", style: TextStyle(fontSize: 20, fontWeight: FontWeight.w400),),
-                   const SizedBox(height: 10),
-                   reuseableTextField2(
-                  'Date of Birth', Icons.date_range,  false, true, _passwordTextController),
-              SizedBox(height: 10),
-              
-              signInSignOutButton(context, false, () {
-                formValidation();
-
-              
-              }),
-
-              ],)
-              
+                  Text(
+                    "Email",
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.w400),
+                  ),
+                  const SizedBox(height: 10),
+                  reuseableTextField(
+                      'E-Mail', false, true, _emailTextController),
+                  SizedBox(height: 15),
+                  Text(
+                    "Password",
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.w400),
+                  ),
+                  const SizedBox(height: 10),
+                  reuseableTextField(
+                      'Password', true, true, _passwordTextController),
+                  SizedBox(height: 15),
+                  Text(
+                    "Date of Birth",
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.w400),
+                  ),
+                  const SizedBox(height: 10),
+                  reuseableTextField2('Date of Birth', Icons.date_range, false,
+                      true, _dateTextController),
+                  signInSignOutButton(context, false, () {
+                    formValidation();
+                  }),
+                ],
+              )
             ],
           ),
         ),
