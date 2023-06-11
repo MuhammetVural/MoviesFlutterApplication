@@ -10,6 +10,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../../extensions/global.dart';
 import '../../../../extensions/widgets/error_dialog.dart';
+import '../../../../extensions/widgets/loading_dialog.dart';
 import '../../../../extensions/widgets/reuseable_widget.dart';
 
 class LoginView extends StatefulWidget {
@@ -40,9 +41,15 @@ class _LoginViewState extends State<LoginView> {
   }
 
   loginNow() async {
-    SmartDialog.showLoading(); 
-    await Future.delayed(const Duration(seconds: 2)); 
-    SmartDialog.dismiss();
+    showDialog(
+          context: context,
+          builder: (c) {
+            {
+              return const LoadingDialog(
+                message: "Registering Account",
+              );
+            }
+          });
 
     User? currentUser;
     await fAuth
@@ -55,17 +62,17 @@ class _LoginViewState extends State<LoginView> {
     }).catchError((error) {
       Navigator.pop(context);
     });
-    // Navigator.pop(context);
-    //    Navigator.push(
-    //        context, MaterialPageRoute(builder: (c) => HomePage()));
+    Navigator.pop(context);
+       Navigator.push(
+           context, MaterialPageRoute(builder: (c) => MainView()));
 
-  if (currentUser != null) {
-    readDataAndSetDataLocally(currentUser!).then((value) {
-      Navigator.pop(context);
-      Navigator.push(
-          context, MaterialPageRoute(builder: (c) => const MainView()));
-    });
-  }
+  // if (currentUser != null) {
+  //   readDataAndSetDataLocally(currentUser!).then((value) {
+  //     Navigator.pop(context);
+  //     Navigator.push(
+  //         context, MaterialPageRoute(builder: (c) => const MainView()));
+  //   });
+  // }
   }
 
 Future readDataAndSetDataLocally(User currentUser) async {
@@ -81,8 +88,8 @@ Future readDataAndSetDataLocally(User currentUser) async {
           .setString("email", snapshot.data()!["userEmail"]);
       await sharedPreferences!
           .setString("name", snapshot.data()!["userName"]);
-      await sharedPreferences!
-          .setString("photoUrl", snapshot.data()!["userAvatarUrl"]);
+      // await sharedPreferences!
+      //     .setString("photoUrl", snapshot.data()!["userAvatarUrl"]);
       Navigator.push(
           context, MaterialPageRoute(builder: (c) => MainView()));
     } else {
