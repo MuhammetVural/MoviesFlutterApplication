@@ -17,7 +17,7 @@ class Category {
   {
     name = json["name"];
     subject = json['subject'];
-    imgUrl = json['sellerAvatarUrl'];
+    imgUrl = json['imgUrl'];
   }
 
   Map<String, dynamic> toJson()
