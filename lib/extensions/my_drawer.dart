@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:movie_flutter_application/core/auth/login/view/login_view.dart';
+import 'package:movie_flutter_application/core/main/view/main_view.dart';
 import 'package:movie_flutter_application/core/profile/profile_view.dart';
 
 import 'global.dart';
@@ -40,14 +41,12 @@ class MyDrawer extends StatelessWidget {
                   height: 10,
                 ),
                 Text(
-                  "sdfsf",
-                  //sharedPreferences!.getString("name")!,
+                  sharedPreferences!.getString("name")!,
                   style: TextStyle(
                       color: Colors.black, fontSize: 20, fontFamily: "Train"),
                 ),
                 Text(
-                  "sdfsf",
-                  //sharedPreferences!.getString("email")!,
+                  sharedPreferences!.getString("email")!,
                   style: TextStyle(
                       color: Colors.black, fontSize: 12, fontFamily: "Train"),
                 ),
@@ -70,7 +69,10 @@ class MyDrawer extends StatelessWidget {
                     "Main",
                     style: TextStyle(color: Colors.black),
                   ),
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (c) => const MainView()));
+                  },
                 ),
 
                 ListTile(

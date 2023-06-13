@@ -75,7 +75,9 @@ class _MainViewState extends State<MainView> {
                               MaterialPageRoute(
                                   builder: (c) => const ProfileView()));
                         },
-                        child: const CircleAvatar())
+                        child: CircleAvatar(
+                            backgroundImage: NetworkImage(
+                                sharedPreferences!.getString("photoUrl")!)))
                   ],
                 ),
               ),
