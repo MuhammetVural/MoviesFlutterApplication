@@ -120,7 +120,6 @@ class _MainViewState extends State<MainView> {
                         
                              radius: 60,
                              backgroundImage: AssetImage("assets/images/doktorlar/${img[index]}"),
-                                
                            ),
                     ),
                   );
