@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:movie_flutter_application/core/main/models/category_model.dart';
+import 'package:movie_flutter_application/core/search/search_view.dart';
 import 'package:movie_flutter_application/extensions/global.dart';
 import 'package:movie_flutter_application/extensions/my_drawer.dart';
 
@@ -89,29 +90,37 @@ class _MainViewState extends State<MainView> {
             children: [
               Padding(
                 padding: EdgeInsets.only(left: 30, right: 30, bottom: 20),
-                child: TextField(
-                  cursorColor: Colors.grey,
-                  style: TextStyle(
-                    color: Colors.black54.withOpacity(0.8),
+                child: InkWell(
+                  onTap: (){
+                    Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (c) => const SearchView()));
+                  },
+                  child: TextField(
+                    cursorColor: Colors.grey,
+                    style: TextStyle(
+                      color: Colors.black54.withOpacity(0.8),
+                    ),
+                    decoration: InputDecoration(
+                      labelText: 'Search',
+                      labelStyle: TextStyle(color: Colors.grey.withOpacity(0.7)),
+                      filled: true,
+                      floatingLabelBehavior: FloatingLabelBehavior.never,
+                      fillColor: Colors.white,
+                
+                      //prefixIcon: const Icon(Icons.search),
+                      suffixIcon: const Icon(Icons.search),
+                
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(5.0),
+                          borderSide: const BorderSide(
+                            width: 0,
+                            style: BorderStyle.none,
+                          )),
+                    ),
+                    controller: _searchController,
                   ),
-                  decoration: InputDecoration(
-                    labelText: 'Search',
-                    labelStyle: TextStyle(color: Colors.grey.withOpacity(0.7)),
-                    filled: true,
-                    floatingLabelBehavior: FloatingLabelBehavior.never,
-                    fillColor: Colors.white,
-
-                    //prefixIcon: const Icon(Icons.search),
-                    suffixIcon: const Icon(Icons.search),
-
-                    border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(5.0),
-                        borderSide: const BorderSide(
-                          width: 0,
-                          style: BorderStyle.none,
-                        )),
-                  ),
-                  controller: _searchController,
                 ),
               ),
               const SizedBox(
