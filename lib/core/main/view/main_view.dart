@@ -1,7 +1,10 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:movie_flutter_application/core/main/models/category_model.dart';
 import 'package:movie_flutter_application/extensions/global.dart';
 import 'package:movie_flutter_application/extensions/my_drawer.dart';
 
+import '../../../extensions/widgets/category_design_widget.dart';
 import '../../auth/login/view/login_view.dart';
 
 class MainView extends StatefulWidget {
@@ -120,7 +123,6 @@ class _MainViewState extends State<MainView> {
                         
                              radius: 60,
                              backgroundImage: AssetImage("assets/images/doktorlar/${img[index]}"),
-                                
                            ),
                     ),
                   );
@@ -139,6 +141,36 @@ class _MainViewState extends State<MainView> {
                       color: Colors.black),
                 ),
               ),
+            ),
+            SizedBox(
+              height: 150, child: StreamBuilder(
+                    stream: FirebaseFirestore.instance
+                        .collection("Comedy")
+                        .snapshots(),
+                    builder: (context, snapshot) {
+                      return !snapshot.hasData
+                          ? Padding(
+                              padding: EdgeInsets.all(0),
+                              child: LinearProgressIndicator(),
+                            )
+                          : Container(
+                              padding: EdgeInsets.only(top: 15, bottom: 40),
+                              width: MediaQuery.of(context).size.width,
+                              child: ListView.builder(
+                                  scrollDirection: Axis.horizontal,
+                                  shrinkWrap: true, //important
+                                  physics: BouncingScrollPhysics(),
+                                  itemCount: snapshot.data!.docs.length,
+                                  itemBuilder: (context, index) {
+                                    Category model = Category.fromJson(
+                                        snapshot.data!.docs[index].data());
+                                    return CategoryDesignWidget(
+                                      model: model,
+                                      context: context,
+                                    );
+                                  }),
+                            );
+                    }),
             ),
             // Expanded(
             //   child: ListView.builder(
