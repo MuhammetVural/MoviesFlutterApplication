@@ -39,21 +39,45 @@ class _CategoryScreenState extends State<CategoryScreen> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  CircleAvatar(
-                              radius: 100,
-                              backgroundImage: NetworkImage(widget.model!.imgUrl!)
-                            ),
-                  const SizedBox(height: 15,),
-                  Text(widget.model!.name!, style: const TextStyle(fontSize: 23, fontWeight: FontWeight.normal),),
-                  const SizedBox(height: 5,),
-                  Text(widget.model!.subject!, style: const TextStyle(fontSize: 14, fontWeight: FontWeight.normal),),
+                  Container(
+              width: MediaQuery.of(context).size.width,
+              height: 250,
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  fit: BoxFit.fill,
+                  image: NetworkImage(widget.model!.imgUrl!),
+                ),
+              ),
+            ),
+            Container(
+              alignment: Alignment.centerLeft,
+              padding: const EdgeInsets.only(left: 20, top: 20),
+              child: Text(
+                widget.model!.name.toString(),
+                style: const TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                ), //textAlign: TextAlign.start,
+              ),
+            ),
+            Container(
+              alignment: Alignment.centerLeft,
+              padding: const EdgeInsets.only(left: 30, top: 20),
+              child: Text(
+                widget.model!.subject.toString(),
+                style: const TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.normal,
+                ), //textAlign: TextAlign.start,
+              ),
+            ),
                 
                 ],
               ),
             ),
             const SizedBox(height: 15,),
 
-            Text(widget.model!.name!, style: const TextStyle(fontSize: 23, fontWeight: FontWeight.bold),),
+           
             
             
          //   Padding(

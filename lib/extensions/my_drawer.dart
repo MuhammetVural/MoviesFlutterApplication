@@ -123,7 +123,7 @@ class MyDrawer extends StatelessWidget {
                    ListTile(
                      leading: const Icon(Icons.exit_to_app, color: Colors.black,),
                      title: const Text(
-                       "Çıkış Yap",
+                       "Sign Out",
                        style: TextStyle(color: Colors.black),
                      ),
                      onTap: ()

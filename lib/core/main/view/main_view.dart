@@ -72,278 +72,224 @@ class _MainViewState extends State<MainView> {
               ),
               preferredSize: const Size.fromHeight(40)),
         ),
-        body: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Padding(
-              padding: EdgeInsets.only(left: 30, right: 30, bottom: 20),
-              child: TextField(
-                cursorColor: Colors.grey,
-                style: TextStyle(
-                  color: Colors.black54.withOpacity(0.8),
-                ),
-                decoration: InputDecoration(
-                  labelText: 'Search',
-                  labelStyle: TextStyle(color: Colors.grey.withOpacity(0.7)),
-                  filled: true,
-                  floatingLabelBehavior: FloatingLabelBehavior.never,
-                  fillColor: Colors.white,
-
-                  //prefixIcon: const Icon(Icons.search),
-                  suffixIcon: const Icon(Icons.search),
-
-                  border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(5.0),
-                      borderSide: const BorderSide(
-                        width: 0,
-                        style: BorderStyle.none,
-                      )),
-                ),
-                controller: _searchController,
-              ),
-            ),
-            const SizedBox(
-              height: 40,
-            ),
-            Container(
-              alignment: Alignment.centerLeft,
-              child: const Padding(
-                padding: EdgeInsets.only(left: 15),
-                child: Text(
-                  'My Collection',
+        body: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Padding(
+                padding: EdgeInsets.only(left: 30, right: 30, bottom: 20),
+                child: TextField(
+                  cursorColor: Colors.grey,
                   style: TextStyle(
-                      fontSize: 22,
-                      fontWeight: FontWeight.w500,
-                      color: Colors.black),
+                    color: Colors.black54.withOpacity(0.8),
+                  ),
+                  decoration: InputDecoration(
+                    labelText: 'Search',
+                    labelStyle: TextStyle(color: Colors.grey.withOpacity(0.7)),
+                    filled: true,
+                    floatingLabelBehavior: FloatingLabelBehavior.never,
+                    fillColor: Colors.white,
+        
+                    //prefixIcon: const Icon(Icons.search),
+                    suffixIcon: const Icon(Icons.search),
+        
+                    border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(5.0),
+                        borderSide: const BorderSide(
+                          width: 0,
+                          style: BorderStyle.none,
+                        )),
+                  ),
+                  controller: _searchController,
                 ),
               ),
-            ),
-            SizedBox(
-              height: 150,
-              child: ListView.builder(
-                  shrinkWrap: true,
-                  scrollDirection: Axis.horizontal,
-                  itemCount: img.length,
-                  itemBuilder: (context, index) {
-                    return Container(
-                      child: Padding(
-                        padding: const EdgeInsets.only(left: 20),
-                        child: CircleAvatar(
-                          radius: 60,
-                          backgroundImage: AssetImage(
-                              "assets/images/doktorlar/${img[index]}"),
+              const SizedBox(
+                height: 40,
+              ),
+              Column(
+                children: [
+              
+              Container(
+                alignment: Alignment.centerLeft,
+                child: const Padding(
+                  padding: EdgeInsets.only(left: 15),
+                  child: Text(
+                    'My Collection',
+                    style: TextStyle(
+                        fontSize: 22,
+                        fontWeight: FontWeight.w500,
+                        color: Colors.black),
+                  ),
+                ),
+              ),
+              SizedBox(
+                height: 150,
+                child: ListView.builder(
+                    shrinkWrap: true,
+                    scrollDirection: Axis.horizontal,
+                    itemCount: img.length,
+                    itemBuilder: (context, index) {
+                      return Container(
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 20),
+                          child: CircleAvatar(
+                            radius: 60,
+                            backgroundImage: AssetImage(
+                                "assets/images/doktorlar/${img[index]}"),
+                          ),
                         ),
-                      ),
-                    );
-                  }),
-            ),
-            SizedBox(
-              height: 15,
-            ),
-            Container(
-              alignment: Alignment.centerLeft,
-              child: const Padding(
-                padding: EdgeInsets.only(left: 15),
-                child: Text(
-                  'Comedy Movies',
-                  style: TextStyle(
-                      fontSize: 22,
-                      fontWeight: FontWeight.w500,
-                      color: Colors.black),
+                      );
+                    }),
+              ),
+              SizedBox(
+                height: 15,
+              ),
+              Container(
+                alignment: Alignment.centerLeft,
+                child: const Padding(
+                  padding: EdgeInsets.only(left: 15),
+                  child: Text(
+                    'Comedy Movies',
+                    style: TextStyle(
+                        fontSize: 22,
+                        fontWeight: FontWeight.w500,
+                        color: Colors.black),
+                  ),
                 ),
               ),
-            ),
-            SizedBox(
-              height: 150,
-              child: StreamBuilder(
-                  stream: FirebaseFirestore.instance
-                      .collection("Comedy")
-                      .snapshots(),
-                  builder: (context, snapshot) {
-                    return !snapshot.hasData
-                        ? Padding(
-                            padding: EdgeInsets.all(0),
-                            child: LinearProgressIndicator(),
-                          )
-                        : Container(
-                            child: ListView.builder(
-                                scrollDirection: Axis.horizontal,
-                                shrinkWrap: true, //important
-                                physics: BouncingScrollPhysics(),
-                                itemCount: snapshot.data!.docs.length,
-                                itemBuilder: (context, index) {
-                                  Category model = Category.fromJson(
-                                      snapshot.data!.docs[index].data());
-                                  return CategoryDesignWidget(
-                                    model: model,
-                                    context: context,
-                                  );
-                                }),
-                          );
-                  }),
-            ),
-            // Expanded(
-            //   child: ListView.builder(
-            //     shrinkWrap: true,
-            //     scrollDirection: Axis.vertical,
-            //     itemCount: 3,
-            //     itemBuilder: (context, index) {
-            //       return InkWell(
-            //         onTap: () {
-            //           Navigator.push(
-            //               context,
-            //               MaterialPageRoute(
-            //                   builder: (context) => CategoryDetailPage(
-            //                         getIndex: index,
-            //                       )));
-            //         },
-            //         child: Column(
-            //           crossAxisAlignment: CrossAxisAlignment.start,
-            //           children: [
-            //             Row(
-            //               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            //               children: [
-            //                 Padding(
-            //                   padding: const EdgeInsets.only(left: 20),
-            //                   child: Text(
-            //                     state.categories[index].name,
-            //                     style: const TextStyle(
-            //                         fontWeight: FontWeight.w600,
-            //                         fontSize: 22),
-            //                   ),
-            //                 ),
-            //                 Padding(
-            //                   padding: const EdgeInsets.only(right: 10),
-            //                   child: TextButton(
-            //                     onPressed: () {
-            //                     //  router.push(HomeRoute(loginModel: null));
-            //                     },
-            //                     child: const Text(
-            //                       'View All',
-            //                       style: TextStyle(
-            //                           color: Colors.black,
-            //                           fontWeight: FontWeight.w500,
-            //                           fontSize: 12),
-            //                     ),
-            //                   ),
-            //                 ),
-            //               ],
-            //             ),
-            //             Container(
-            //               decoration: BoxDecoration(
-            //                   borderRadius: BorderRadius.circular(4)),
-            //               height: 180,
-            //               child: ListView.builder(
-            //                 shrinkWrap: true,
-            //                 scrollDirection: Axis.horizontal,
-            //                 itemCount: 3,
-            //                 itemBuilder: (context, subIndex) {
-            //                   return Padding(
-            //                     padding: const EdgeInsets.all(15),
-            //                     child: Container(
-            //                       padding: const EdgeInsets.all(10),
-            //                       color: ColorManager.textFieldGreyBackround,
-            //                       child: Row(
-            //                         crossAxisAlignment:
-            //                             CrossAxisAlignment.center,
-            //                         children: [
-            //                           Container(
-            //                             width: 80,
-            //                             height: 180,
-            //                             padding: const EdgeInsets.all(10),
-            //                             child: Image(
-            //                                 image: NetworkImage(
-            //                               state2.products[index].cover,
-            //                             )),
-            //                           ),
-            //                           Column(
-            //                             mainAxisAlignment:
-            //                                 MainAxisAlignment.spaceEvenly,
-            //                             crossAxisAlignment:
-            //                                 CrossAxisAlignment.start,
-            //                             children: [
-            //                               Column(
-            //                                 crossAxisAlignment:
-            //                                     CrossAxisAlignment.start,
-            //                                 children: [
-            //                                   Text(
-            //                                     state2.products[subIndex].name,
-            //                                     style: TextStyle(
-            //                                         color:
-            //                                             ColorManager.textColor,
-            //                                         fontSize: 16,
-            //                                         fontWeight:
-            //                                             FontWeight.w500),
-            //                                   ),
-            //                                   const SizedBox(
-            //                                     height: 5,
-            //                                   ),
-            //                                   Text(
-            //                                     state2
-            //                                         .products[subIndex].author,
-            //                                     style: TextStyle(
-            //                                         color:
-            //                                             ColorManager.textColor,
-            //                                         fontSize: 16,
-            //                                         fontWeight:
-            //                                             FontWeight.w400),
-            //                                   ),
-            //                                 ],
-            //                               ),
-            //                               Text(
-            //                                 state2.products[index].price
-            //                                     .toString(),
-            //                                 style: const TextStyle(
-            //                                     fontSize: 16,
-            //                                     fontWeight: FontWeight.bold),
-            //                               )
-            //                             ],
-            //                           ),
-            //                         ],
-            //                       ),
-            //                     ),
-            //                   );
-            //                 },
-            //               ),
-            //             ),
-            //           ],
-            //         ),
-            //       );
-            //     },
-            //   ),
-            // ),
-            // Row(
-            //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            //   children: [
-            //     const Padding(
-            //       padding: EdgeInsets.only(left: 20),
-            //       child: Text('',
-            //        // loginModel.email,
-            //         style: TextStyle(
-            //             fontWeight: FontWeight.w600, fontSize: 20),
-            //       ),
-            //     ),
-            //     Padding(
-            //       padding: const EdgeInsets.only(right: 10),
-            //       child: TextButton(
-            //         onPressed: () {
-            //          // router.push(HomeRoute(loginModel: null));
-            //         },
-            //         child: const Text('',
-            //         //  loginModel.token,
-            //           style: TextStyle(
-            //              // color: ColorManager.orangeButtonColor,
-            //               fontWeight: FontWeight.w500),
-            //         ),
-            //       ),
-            //     ),
-            //   ],
-            // ),
+              SizedBox(
+                height: 150,
+                child: StreamBuilder(
+                    stream: FirebaseFirestore.instance
+                        .collection("Comedy")
+                        .snapshots(),
+                    builder: (context, snapshot) {
+                      return !snapshot.hasData
+                          ? Padding(
+                              padding: EdgeInsets.all(0),
+                              child: LinearProgressIndicator(),
+                            )
+                          : Container(
+                              child: ListView.builder(
+                                  scrollDirection: Axis.horizontal,
+                                  shrinkWrap: true, //important
+                                  physics: BouncingScrollPhysics(),
+                                  itemCount: snapshot.data!.docs.length,
+                                  itemBuilder: (context, index) {
+                                    Category model = Category.fromJson(
+                                        snapshot.data!.docs[index].data());
+                                    return CategoryDesignWidget(
+                                      model: model,
+                                      context: context,
+                                    );
+                                  }),
+                            );
+                    }),
+              ),
+              
+              
+              SizedBox(
+                height: 15,
+              ),
+              Container(
+                alignment: Alignment.centerLeft,
+                child: const Padding(
+                  padding: EdgeInsets.only(left: 15),
+                  child: Text(
+                    'Romantic Movies',
+                    style: TextStyle(
+                        fontSize: 22,
+                        fontWeight: FontWeight.w500,
+                        color: Colors.black),
+                  ),
+                ),
+              ),
+              SizedBox(
+                height: 150,
+                child: StreamBuilder(
+                    stream: FirebaseFirestore.instance
+                        .collection("romantic")
+                        .snapshots(),
+                    builder: (context, snapshot) {
+                      return !snapshot.hasData
+                          ? Padding(
+                              padding: EdgeInsets.all(0),
+                              child: LinearProgressIndicator(),
+                            )
+                          : Container(
+                              child: ListView.builder(
+                                  scrollDirection: Axis.horizontal,
+                                  shrinkWrap: true, //important
+                                  physics: BouncingScrollPhysics(),
+                                  itemCount: snapshot.data!.docs.length,
+                                  itemBuilder: (context, index) {
+                                    Category model = Category.fromJson(
+                                        snapshot.data!.docs[index].data());
+                                    return CategoryDesignWidget(
+                                      model: model,
+                                      context: context,
+                                    );
+                                  }),
+                            );
+                    }),
+              ),
 
-            const SizedBox(
-              height: 20,
-            ),
-          ],
+              SizedBox(
+                height: 15,
+              ),
+              Container(
+                alignment: Alignment.centerLeft,
+                child: const Padding(
+                  padding: EdgeInsets.only(left: 15),
+                  child: Text(
+                    'Action&Adventure Movies',
+                    style: TextStyle(
+                        fontSize: 22,
+                        fontWeight: FontWeight.w500,
+                        color: Colors.black),
+                  ),
+                ),
+              ),
+              SizedBox(
+                height: 150,
+                child: StreamBuilder(
+                    stream: FirebaseFirestore.instance
+                        .collection("action")
+                        .snapshots(),
+                    builder: (context, snapshot) {
+                      return !snapshot.hasData
+                          ? Padding(
+                              padding: EdgeInsets.all(0),
+                              child: LinearProgressIndicator(),
+                            )
+                          : Container(
+                              child: ListView.builder(
+                                  scrollDirection: Axis.horizontal,
+                                  shrinkWrap: true, //important
+                                  physics: BouncingScrollPhysics(),
+                                  itemCount: snapshot.data!.docs.length,
+                                  itemBuilder: (context, index) {
+                                    Category model = Category.fromJson(
+                                        snapshot.data!.docs[index].data());
+                                    return CategoryDesignWidget(
+                                      model: model,
+                                      context: context,
+                                    );
+                                  }),
+                            );
+                    }),
+              ),
+
+
+
+
+                ],
+              )
+        
+        
+        
+            ],
+          ),
         ));
     // child: ElevatedButton(
     //     onPressed: () {
