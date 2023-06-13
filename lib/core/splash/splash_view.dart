@@ -17,12 +17,15 @@ class SplashView extends StatefulWidget {
 class _SplashViewState extends State<SplashView> {
   startTimer() {
     Timer(const Duration(seconds: 3), () async {
-      if (fAuth.currentUser != null) {
-        Navigator.push(context, MaterialPageRoute(builder: (c) => const MainView()));
-      } else {
-        Navigator.push(
+
+      Navigator.push(
             context, MaterialPageRoute(builder: (c) => const LoginView()));
-      }
+      // if (fAuth.currentUser != null) {
+      //   Navigator.push(context, MaterialPageRoute(builder: (c) => const MainView()));
+      // } else {
+      //   Navigator.push(
+      //       context, MaterialPageRoute(builder: (c) => const LoginView()));
+      // }
     });
   }
 

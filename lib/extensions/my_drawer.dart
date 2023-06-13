@@ -1,11 +1,10 @@
-
 import 'package:flutter/material.dart';
 import 'package:movie_flutter_application/core/auth/login/view/login_view.dart';
+import 'package:movie_flutter_application/core/profile/profile_view.dart';
 
 import 'global.dart';
 
-
-// bitklieri sulamak için oluşturulacak bir countdown timer  
+// bitklieri sulamak için oluşturulacak bir countdown timer
 
 class MyDrawer extends StatelessWidget {
   const MyDrawer({Key? key}) : super(key: key);
@@ -37,106 +36,105 @@ class MyDrawer extends StatelessWidget {
                 //     ),
                 //   ),
                 // ),
-                const SizedBox(height: 10,),
+                const SizedBox(
+                  height: 10,
+                ),
                 Text(
                   "sdfsf",
                   //sharedPreferences!.getString("name")!,
-                  style: TextStyle(color: Colors.black, fontSize: 20, fontFamily: "Train"),
+                  style: TextStyle(
+                      color: Colors.black, fontSize: 20, fontFamily: "Train"),
                 ),
                 Text(
                   "sdfsf",
                   //sharedPreferences!.getString("email")!,
-                  style: TextStyle(color: Colors.black, fontSize: 12, fontFamily: "Train"),
+                  style: TextStyle(
+                      color: Colors.black, fontSize: 12, fontFamily: "Train"),
                 ),
               ],
             ),
           ),
 
-
-
           //body drawer
           Container(
             padding: const EdgeInsets.all(16),
             child: Wrap(
-              
               runSpacing: 16,
+              children: [
+                ListTile(
+                  leading: const Icon(
+                    Icons.home,
+                    color: Colors.black,
+                  ),
+                  title: const Text(
+                    "Main",
+                    style: TextStyle(color: Colors.black),
+                  ),
+                  onTap: () {},
+                ),
 
-             children: [
+                ListTile(
+                  leading: const Icon(
+                    Icons.cloud_circle,
+                    color: Colors.black,
+                  ),
+                  title: const Text(
+                    "Profile",
+                    style: TextStyle(color: Colors.black),
+                  ),
+                  onTap: () {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (c) => const ProfileView()));
+                  },
+                ),
 
+                //  ListTile(
+                //    leading: const Icon(Icons.timer, color: Colors.black,),
+                //    title: const Text(
+                //      "Bitki Sulama",
+                //      style: TextStyle(color: Colors.black),
+                //    ),
+                //    onTap: ()
+                //    {
+                //    // Navigator.push(context, MaterialPageRoute(builder: (c)=> TimerPage()));
 
+                //    },
+                //  ),
 
-                   ListTile(
-                     leading: const Icon(Icons.home, color: Colors.black,),
-                     title: const Text(
-                       "Main",
-                       style: TextStyle(color: Colors.black),
-                     ),
-                     onTap: ()
-                     {
+                //  ListTile(
+                //    leading: const Icon(Icons.reorder, color: Colors.black,),
+                //    title: const Text(
+                //      "New Orders",
+                //      style: TextStyle(color: Colors.black),
+                //    ),
+                //    onTap: ()
+                //    {
 
-                     },
-                   ),
+                //    },
+                //  ),
 
-                   ListTile(
-                     leading: const Icon(Icons.cloud_circle, color: Colors.black,),
-                     title: const Text(
-                       "Profile",
-                       style: TextStyle(color: Colors.black),
-                     ),
-                     onTap: ()
-                     {
-                     // Navigator.push(context, MaterialPageRoute(builder: (c)=> const HavaDurumu()));
+                //  const Divider(
+                //    height: 0,
+                //    color: Colors.grey,
 
-                     },
-                   ),
-
-                  //  ListTile(
-                  //    leading: const Icon(Icons.timer, color: Colors.black,),
-                  //    title: const Text(
-                  //      "Bitki Sulama",
-                  //      style: TextStyle(color: Colors.black),
-                  //    ),
-                  //    onTap: ()
-                  //    {
-                  //    // Navigator.push(context, MaterialPageRoute(builder: (c)=> TimerPage()));
-
-                  //    },
-                  //  ),
-
-               //  ListTile(
-               //    leading: const Icon(Icons.reorder, color: Colors.black,),
-               //    title: const Text(
-               //      "New Orders",
-               //      style: TextStyle(color: Colors.black),
-               //    ),
-               //    onTap: ()
-               //    {
-
-               //    },
-               //  ),
-
-               //  const Divider(
-               //    height: 0,
-               //    color: Colors.grey,
-
-               //    ),
-                   ListTile(
-                     leading: const Icon(Icons.exit_to_app, color: Colors.black,),
-                     title: const Text(
-                       "Sign Out",
-                       style: TextStyle(color: Colors.black),
-                     ),
-                     onTap: ()
-                     {
-                       fAuth.signOut().then((value){
-                         Navigator.push(context, MaterialPageRoute(builder: (c)=> const LoginView()));
-                       });
-                     },
-                   ),
-
-                 ],
-
-
+                //    ),
+                ListTile(
+                  leading: const Icon(
+                    Icons.exit_to_app,
+                    color: Colors.black,
+                  ),
+                  title: const Text(
+                    "Sign Out",
+                    style: TextStyle(color: Colors.black),
+                  ),
+                  onTap: () {
+                    fAuth.signOut().then((value) {
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (c) => const LoginView()));
+                    });
+                  },
+                ),
+              ],
             ),
           ),
         ],

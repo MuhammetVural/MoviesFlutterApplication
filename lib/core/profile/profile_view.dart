@@ -1,11 +1,16 @@
+import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-
+import 'package:firebase_storage/firebase_storage.dart' as fStorage;
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../extensions/global.dart';
 import '../../extensions/my_drawer.dart';
+import '../../extensions/widgets/error_dialog.dart';
 import 'models/person_model.dart';
-
 
 class ProfileView extends StatefulWidget {
   final Person? model;
@@ -16,42 +21,120 @@ class ProfileView extends StatefulWidget {
 }
 
 class _ProfileViewState extends State<ProfileView> {
+  String userImageUrl = "";
+  XFile? imageXFile;
+  final ImagePicker _picker = ImagePicker();
+
+  Future<void> _getImage() async {
+    imageXFile = await _picker.pickImage(source: ImageSource.gallery);
+
+    setState(() {
+      imageXFile;
+    });
+  }
+
+  Future<void> formValidation() async {
+    String fileName = DateTime.now().microsecondsSinceEpoch.toString();
+    fStorage.Reference reference =
+        fStorage.FirebaseStorage.instance.ref().child('users').child(fileName);
+    fStorage.UploadTask uploadTask = reference.putFile(File(imageXFile!.path));
+    fStorage.TaskSnapshot taskSnapshot = await uploadTask.whenComplete(() {});
+    await taskSnapshot.ref.getDownloadURL().then((url) {
+      userImageUrl = url;
+      saveDataToFirestore();
+    });
+
+    // }
+  }
+
+  Future saveDataToFirestore() async {
+    FirebaseFirestore.instance
+        .collection("users")
+        .doc(sharedPreferences!.getString("uid"))
+        .set({
+      "userAvatarUrl": userImageUrl,
+    });
+    Fluttertoast.showToast(msg: 'Success');
+
+    //save data locally
+    sharedPreferences = await SharedPreferences.getInstance();
+
+    await sharedPreferences!.setString("photoUrl", userImageUrl);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.blueAccent.shade100,
+      backgroundColor: Colors.white,
       appBar: AppBar(
-        flexibleSpace: Container(
-          decoration: const BoxDecoration(),
-        ),
-        title: Text(
-          sharedPreferences!.getString("name") ?? 'Null',
-        ),
-        centerTitle: true,
+        elevation: 0,
+        backgroundColor: Colors.transparent,
+        bottom: PreferredSize(
+            child: Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Row(
+                    children: [
+                      Builder(builder: (context) {
+                        return IconButton(
+                            onPressed: () {
+                              Scaffold.of(context).openDrawer();
+                            },
+                            icon: const Icon(Icons.menu));
+                      }),
+                      Text(
+                        sharedPreferences!.getString("name") ?? 'Null',
+                        //"Sezin Karagün",
+                        style: TextStyle(
+                            color: Colors.black,
+                            fontWeight: FontWeight.w300,
+                            fontSize: 17),
+                      ),
+                    ],
+                  ),
+                  const CircleAvatar()
+                ],
+              ),
+            ),
+            preferredSize: const Size.fromHeight(40)),
       ),
       drawer: const MyDrawer(),
       body: SingleChildScrollView(
         physics: const BouncingScrollPhysics(),
         child: Column(
           children: [
-            const SizedBox(
-              height: 50,
-            ),
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 10),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  CircleAvatar(
-                      radius: 100,
-                      // backgroundImage:
-                      //     NetworkImage(widget.model!.sellerAvatarUrl!)
-                          ),
+                  InkWell(
+                    onTap: () {
+                      _getImage();
+                    },
+                    child: CircleAvatar(
+                      radius: MediaQuery.of(context).size.width * 0.20,
+                      backgroundColor: Colors.black12,
+                      backgroundImage: imageXFile == null
+                          ? null
+                          : FileImage(File(imageXFile!.path)),
+                      child: imageXFile == null
+                          ? Icon(
+                              Icons.add_photo_alternate,
+                              size: MediaQuery.of(context).size.width * 0.20,
+                              color: Colors.grey,
+                            )
+                          : null,
+                    ),
+                  ),
                   const SizedBox(
                     height: 15,
                   ),
                   Text(
-                    widget.model!.userName!,
+                    "gggg",
+                    //widget.model!.userName!,
                     style: const TextStyle(
                         fontSize: 23, fontWeight: FontWeight.bold),
                   ),
@@ -59,10 +142,16 @@ class _ProfileViewState extends State<ProfileView> {
                     height: 5,
                   ),
                   Text(
-                    widget.model!.userEmail!,
+                    "mail",
+                    // widget.model!.userEmail!,
                     style: const TextStyle(
                         fontSize: 14, fontWeight: FontWeight.normal),
                   ),
+                  ElevatedButton(
+                      onPressed: () {
+                        formValidation();
+                      },
+                      child: Text("Update"))
                 ],
               ),
             ),

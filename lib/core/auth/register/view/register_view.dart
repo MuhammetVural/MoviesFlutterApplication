@@ -29,10 +29,7 @@ class _RegisterViewState extends State<RegisterView> {
   TextEditingController _userNameTextController = TextEditingController();
   TextEditingController _dateTextController = TextEditingController();
 
-  //XFile? imageXFile;
-  // final ImagePicker _picker = ImagePicker();
-
-  // String sellerImageUrl = "";
+  String userImageUrl = "";
   String completeAddress = "";
 
   // Future<void> _getImage() async {
@@ -79,7 +76,6 @@ class _RegisterViewState extends State<RegisterView> {
       //     await uploadTask.whenComplete(() {});
       // await taskSnapshot.ref.getDownloadURL().then((url) {
       //   sellerImageUrl = url;
-      //   authenticateSellerAndSignUp();
       // });
     } else {
       showDialog(
@@ -129,7 +125,7 @@ class _RegisterViewState extends State<RegisterView> {
       "userUID": currentUser.uid,
       "userEmail": currentUser.email,
       "userName": _userNameTextController.text.trim(),
-      //"userAvatarUrl": sellerImageUrl,
+      "userAvatarUrl": userImageUrl,
       "status": "approved",
     });
 
@@ -139,7 +135,7 @@ class _RegisterViewState extends State<RegisterView> {
     await sharedPreferences!.setString("email", currentUser.email.toString());
     await sharedPreferences!
         .setString("name", _userNameTextController.text.trim());
-    // await sharedPreferences!.setString("photoUrl", sellerImageUrl);
+    // await sharedPreferences!.setString("photoUrl", userImageUrl);
   }
 
   @override

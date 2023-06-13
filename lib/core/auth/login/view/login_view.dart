@@ -1,4 +1,3 @@
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
@@ -42,14 +41,14 @@ class _LoginViewState extends State<LoginView> {
 
   loginNow() async {
     showDialog(
-          context: context,
-          builder: (c) {
-            {
-              return const LoadingDialog(
-                message: "Registering Account",
-              );
-            }
-          });
+        context: context,
+        builder: (c) {
+          {
+            return const LoadingDialog(
+              message: "Signing Account",
+            );
+          }
+        });
 
     User? currentUser;
     await fAuth
@@ -62,56 +61,53 @@ class _LoginViewState extends State<LoginView> {
     }).catchError((error) {
       Navigator.pop(context);
     });
-    Navigator.pop(context);
-       Navigator.push(
-           context, MaterialPageRoute(builder: (c) => MainView()));
+    // Navigator.pop(context);
+    //    Navigator.push(
+    //        context, MaterialPageRoute(builder: (c) => MainView()));
 
-  // if (currentUser != null) {
-  //   readDataAndSetDataLocally(currentUser!).then((value) {
-  //     Navigator.pop(context);
-  //     Navigator.push(
-  //         context, MaterialPageRoute(builder: (c) => const MainView()));
-  //   });
-  // }
+    if (currentUser != null) {
+      readDataAndSetDataLocally(currentUser!).then((value) {
+        Navigator.pop(context);
+        Navigator.push(
+            context, MaterialPageRoute(builder: (c) => const MainView()));
+      });
+    }
   }
 
-Future readDataAndSetDataLocally(User currentUser) async {
-  await FirebaseFirestore.instance
-      .collection("users")
-      .doc(currentUser.uid)
-      .get()
-      .then((snapshot) async {
-    if (snapshot.exists) {
-      sharedPreferences = await SharedPreferences.getInstance();
-      await sharedPreferences!.setString("uid", currentUser.uid);
-      await sharedPreferences!
-          .setString("email", snapshot.data()!["userEmail"]);
-      await sharedPreferences!
-          .setString("name", snapshot.data()!["userName"]);
-      // await sharedPreferences!
-      //     .setString("photoUrl", snapshot.data()!["userAvatarUrl"]);
-      Navigator.push(
-          context, MaterialPageRoute(builder: (c) => MainView()));
-    } else {
-      fAuth.signOut();
-      Navigator.pop(context);
-      Navigator.push(
-          context, MaterialPageRoute(builder: (c) => LoginView()));
-      showDialog(
-          context: context,
-          builder: (c) {
-            return const ErrorDialog(
-              message: "No record exists. ",
-            );
-          });
-    }
-  });
-}
+  Future readDataAndSetDataLocally(User currentUser) async {
+    await FirebaseFirestore.instance
+        .collection("users")
+        .doc(currentUser.uid)
+        .get()
+        .then((snapshot) async {
+      if (snapshot.exists) {
+        sharedPreferences = await SharedPreferences.getInstance();
+        await sharedPreferences!.setString("uid", currentUser.uid);
+        await sharedPreferences!
+            .setString("email", snapshot.data()!["userEmail"]);
+        await sharedPreferences!
+            .setString("name", snapshot.data()!["userName"]);
+        // await sharedPreferences!
+        //     .setString("photoUrl", snapshot.data()!["userAvatarUrl"]);
+        Navigator.push(context, MaterialPageRoute(builder: (c) => MainView()));
+      } else {
+        fAuth.signOut();
+        Navigator.pop(context);
+        Navigator.push(context, MaterialPageRoute(builder: (c) => LoginView()));
+        showDialog(
+            context: context,
+            builder: (c) {
+              return const ErrorDialog(
+                message: "No record exists. ",
+              );
+            });
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-
       resizeToAvoidBottomInset: false,
       body: Container(
         width: MediaQuery.of(context).size.width,
@@ -121,38 +117,47 @@ Future readDataAndSetDataLocally(User currentUser) async {
               20, MediaQuery.of(context).size.height * 0.12, 20, 0),
           child: Column(
             children: <Widget>[
-              Text("Login", style: TextStyle(fontSize: 58, fontWeight: FontWeight.w500),),
+              Text(
+                "Login",
+                style: TextStyle(fontSize: 58, fontWeight: FontWeight.w500),
+              ),
               const SizedBox(height: 30),
-              Text("Sign in to continue", style: TextStyle(fontSize: 20, fontWeight: FontWeight.w400),),
+              Text(
+                "Sign in to continue",
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.w400),
+              ),
               const SizedBox(height: 50),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                   Text("Email", style: TextStyle(fontSize: 20, fontWeight: FontWeight.w400),),
-                   const SizedBox(height: 10),
-                   reuseableTextField('Email',  false, true,
-                  _emailTextController),
-                   const SizedBox(height: 20),
-                   Text("Password", style: TextStyle(fontSize: 20, fontWeight: FontWeight.w400),),
-                   const SizedBox(height: 10),
-                   reuseableTextField('Password', true, true,
-                  _passwordTextController),
-              const SizedBox(height: 40),
-              signInSignOutButton(context, true, () {
-                formValidation();
-              }),
-
-              ],),
-              
+                  Text(
+                    "Email",
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.w400),
+                  ),
+                  const SizedBox(height: 10),
+                  reuseableTextField(
+                      'Email', false, true, _emailTextController),
+                  const SizedBox(height: 20),
+                  Text(
+                    "Password",
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.w400),
+                  ),
+                  const SizedBox(height: 10),
+                  reuseableTextField(
+                      'Password', true, true, _passwordTextController),
+                  const SizedBox(height: 40),
+                  signInSignOutButton(context, true, () {
+                    formValidation();
+                  }),
+                ],
+              ),
               const SizedBox(height: 10),
               signUpOption(context)
             ],
           ),
         ),
       ),
-
     );
-
   }
 }
 
@@ -166,8 +171,8 @@ Row signUpOption(BuildContext context) {
       ),
       GestureDetector(
         onTap: () {
-          Navigator.push(
-              context, MaterialPageRoute(builder: (context) => const RegisterView()));
+          Navigator.push(context,
+              MaterialPageRoute(builder: (context) => const RegisterView()));
         },
         child: Text(
           "Sign up",

@@ -6,6 +6,7 @@ import 'package:movie_flutter_application/extensions/my_drawer.dart';
 
 import '../../../extensions/widgets/category_design_widget.dart';
 import '../../auth/login/view/login_view.dart';
+import '../../profile/profile_view.dart';
 
 class MainView extends StatefulWidget {
   const MainView({super.key});
@@ -57,9 +58,9 @@ class _MainViewState extends State<MainView> {
                               },
                               icon: const Icon(Icons.menu));
                         }),
-                         Text(
-                         // sharedPreferences!.getString("name") ?? 'Null',
-                          "Sezin Karagün",
+                        Text(
+                          sharedPreferences!.getString("name") ?? 'Null',
+                          //"Sezin Karagün",
                           style: TextStyle(
                               color: Colors.black,
                               fontWeight: FontWeight.w300,
@@ -67,7 +68,14 @@ class _MainViewState extends State<MainView> {
                         ),
                       ],
                     ),
-                    const CircleAvatar()
+                    InkWell(
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (c) => const ProfileView()));
+                        },
+                        child: const CircleAvatar())
                   ],
                 ),
               ),
@@ -90,10 +98,10 @@ class _MainViewState extends State<MainView> {
                     filled: true,
                     floatingLabelBehavior: FloatingLabelBehavior.never,
                     fillColor: Colors.white,
-        
+
                     //prefixIcon: const Icon(Icons.search),
                     suffixIcon: const Icon(Icons.search),
-        
+
                     border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(5.0),
                         borderSide: const BorderSide(
@@ -109,186 +117,175 @@ class _MainViewState extends State<MainView> {
               ),
               Column(
                 children: [
-              
-              Container(
-                alignment: Alignment.centerLeft,
-                child: const Padding(
-                  padding: EdgeInsets.only(left: 15),
-                  child: Text(
-                    'My Collection',
-                    style: TextStyle(
-                        fontSize: 22,
-                        fontWeight: FontWeight.w500,
-                        color: Colors.black),
+                  Container(
+                    alignment: Alignment.centerLeft,
+                    child: const Padding(
+                      padding: EdgeInsets.only(left: 15),
+                      child: Text(
+                        'My Collection',
+                        style: TextStyle(
+                            fontSize: 22,
+                            fontWeight: FontWeight.w500,
+                            color: Colors.black),
+                      ),
+                    ),
                   ),
-                ),
-              ),
-              SizedBox(
-                height: 150,
-                child: ListView.builder(
-                    shrinkWrap: true,
-                    scrollDirection: Axis.horizontal,
-                    itemCount: img.length,
-                    itemBuilder: (context, index) {
-                      return Container(
-                        child: Padding(
-                          padding: const EdgeInsets.only(left: 20),
-                          child: CircleAvatar(
-                            radius: 60,
-                            backgroundImage: AssetImage(
-                                "assets/images/doktorlar/${img[index]}"),
-                          ),
-                        ),
-                      );
-                    }),
-              ),
-              SizedBox(
-                height: 15,
-              ),
-              Container(
-                alignment: Alignment.centerLeft,
-                child: const Padding(
-                  padding: EdgeInsets.only(left: 15),
-                  child: Text(
-                    'Comedy Movies',
-                    style: TextStyle(
-                        fontSize: 22,
-                        fontWeight: FontWeight.w500,
-                        color: Colors.black),
+                  SizedBox(
+                    height: 150,
+                    child: ListView.builder(
+                        shrinkWrap: true,
+                        scrollDirection: Axis.horizontal,
+                        itemCount: img.length,
+                        itemBuilder: (context, index) {
+                          return Container(
+                            child: Padding(
+                              padding: const EdgeInsets.only(left: 20),
+                              child: CircleAvatar(
+                                radius: 60,
+                                backgroundImage: AssetImage(
+                                    "assets/images/doktorlar/${img[index]}"),
+                              ),
+                            ),
+                          );
+                        }),
                   ),
-                ),
-              ),
-              SizedBox(
-                height: 150,
-                child: StreamBuilder(
-                    stream: FirebaseFirestore.instance
-                        .collection("Comedy")
-                        .snapshots(),
-                    builder: (context, snapshot) {
-                      return !snapshot.hasData
-                          ? Padding(
-                              padding: EdgeInsets.all(0),
-                              child: LinearProgressIndicator(),
-                            )
-                          : Container(
-                              child: ListView.builder(
-                                  scrollDirection: Axis.horizontal,
-                                  shrinkWrap: true, //important
-                                  physics: BouncingScrollPhysics(),
-                                  itemCount: snapshot.data!.docs.length,
-                                  itemBuilder: (context, index) {
-                                    Category model = Category.fromJson(
-                                        snapshot.data!.docs[index].data());
-                                    return CategoryDesignWidget(
-                                      model: model,
-                                      context: context,
-                                    );
-                                  }),
-                            );
-                    }),
-              ),
-              
-              
-              SizedBox(
-                height: 15,
-              ),
-              Container(
-                alignment: Alignment.centerLeft,
-                child: const Padding(
-                  padding: EdgeInsets.only(left: 15),
-                  child: Text(
-                    'Romantic Movies',
-                    style: TextStyle(
-                        fontSize: 22,
-                        fontWeight: FontWeight.w500,
-                        color: Colors.black),
+                  SizedBox(
+                    height: 15,
                   ),
-                ),
-              ),
-              SizedBox(
-                height: 150,
-                child: StreamBuilder(
-                    stream: FirebaseFirestore.instance
-                        .collection("romantic")
-                        .snapshots(),
-                    builder: (context, snapshot) {
-                      return !snapshot.hasData
-                          ? Padding(
-                              padding: EdgeInsets.all(0),
-                              child: LinearProgressIndicator(),
-                            )
-                          : Container(
-                              child: ListView.builder(
-                                  scrollDirection: Axis.horizontal,
-                                  shrinkWrap: true, //important
-                                  physics: BouncingScrollPhysics(),
-                                  itemCount: snapshot.data!.docs.length,
-                                  itemBuilder: (context, index) {
-                                    Category model = Category.fromJson(
-                                        snapshot.data!.docs[index].data());
-                                    return CategoryDesignWidget(
-                                      model: model,
-                                      context: context,
-                                    );
-                                  }),
-                            );
-                    }),
-              ),
-
-              SizedBox(
-                height: 15,
-              ),
-              Container(
-                alignment: Alignment.centerLeft,
-                child: const Padding(
-                  padding: EdgeInsets.only(left: 15),
-                  child: Text(
-                    'Action&Adventure Movies',
-                    style: TextStyle(
-                        fontSize: 22,
-                        fontWeight: FontWeight.w500,
-                        color: Colors.black),
+                  Container(
+                    alignment: Alignment.centerLeft,
+                    child: const Padding(
+                      padding: EdgeInsets.only(left: 15),
+                      child: Text(
+                        'Comedy Movies',
+                        style: TextStyle(
+                            fontSize: 22,
+                            fontWeight: FontWeight.w500,
+                            color: Colors.black),
+                      ),
+                    ),
                   ),
-                ),
-              ),
-              SizedBox(
-                height: 150,
-                child: StreamBuilder(
-                    stream: FirebaseFirestore.instance
-                        .collection("action")
-                        .snapshots(),
-                    builder: (context, snapshot) {
-                      return !snapshot.hasData
-                          ? Padding(
-                              padding: EdgeInsets.all(0),
-                              child: LinearProgressIndicator(),
-                            )
-                          : Container(
-                              child: ListView.builder(
-                                  scrollDirection: Axis.horizontal,
-                                  shrinkWrap: true, //important
-                                  physics: BouncingScrollPhysics(),
-                                  itemCount: snapshot.data!.docs.length,
-                                  itemBuilder: (context, index) {
-                                    Category model = Category.fromJson(
-                                        snapshot.data!.docs[index].data());
-                                    return CategoryDesignWidget(
-                                      model: model,
-                                      context: context,
-                                    );
-                                  }),
-                            );
-                    }),
-              ),
-
-
-
-
+                  SizedBox(
+                    height: 150,
+                    child: StreamBuilder(
+                        stream: FirebaseFirestore.instance
+                            .collection("Comedy")
+                            .snapshots(),
+                        builder: (context, snapshot) {
+                          return !snapshot.hasData
+                              ? Padding(
+                                  padding: EdgeInsets.all(0),
+                                  child: LinearProgressIndicator(),
+                                )
+                              : Container(
+                                  child: ListView.builder(
+                                      scrollDirection: Axis.horizontal,
+                                      shrinkWrap: true, //important
+                                      physics: BouncingScrollPhysics(),
+                                      itemCount: snapshot.data!.docs.length,
+                                      itemBuilder: (context, index) {
+                                        Category model = Category.fromJson(
+                                            snapshot.data!.docs[index].data());
+                                        return CategoryDesignWidget(
+                                          model: model,
+                                          context: context,
+                                        );
+                                      }),
+                                );
+                        }),
+                  ),
+                  SizedBox(
+                    height: 15,
+                  ),
+                  Container(
+                    alignment: Alignment.centerLeft,
+                    child: const Padding(
+                      padding: EdgeInsets.only(left: 15),
+                      child: Text(
+                        'Romantic Movies',
+                        style: TextStyle(
+                            fontSize: 22,
+                            fontWeight: FontWeight.w500,
+                            color: Colors.black),
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 150,
+                    child: StreamBuilder(
+                        stream: FirebaseFirestore.instance
+                            .collection("romantic")
+                            .snapshots(),
+                        builder: (context, snapshot) {
+                          return !snapshot.hasData
+                              ? Padding(
+                                  padding: EdgeInsets.all(0),
+                                  child: LinearProgressIndicator(),
+                                )
+                              : Container(
+                                  child: ListView.builder(
+                                      scrollDirection: Axis.horizontal,
+                                      shrinkWrap: true, //important
+                                      physics: BouncingScrollPhysics(),
+                                      itemCount: snapshot.data!.docs.length,
+                                      itemBuilder: (context, index) {
+                                        Category model = Category.fromJson(
+                                            snapshot.data!.docs[index].data());
+                                        return CategoryDesignWidget(
+                                          model: model,
+                                          context: context,
+                                        );
+                                      }),
+                                );
+                        }),
+                  ),
+                  SizedBox(
+                    height: 15,
+                  ),
+                  Container(
+                    alignment: Alignment.centerLeft,
+                    child: const Padding(
+                      padding: EdgeInsets.only(left: 15),
+                      child: Text(
+                        'Action&Adventure Movies',
+                        style: TextStyle(
+                            fontSize: 22,
+                            fontWeight: FontWeight.w500,
+                            color: Colors.black),
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 150,
+                    child: StreamBuilder(
+                        stream: FirebaseFirestore.instance
+                            .collection("action")
+                            .snapshots(),
+                        builder: (context, snapshot) {
+                          return !snapshot.hasData
+                              ? Padding(
+                                  padding: EdgeInsets.all(0),
+                                  child: LinearProgressIndicator(),
+                                )
+                              : Container(
+                                  child: ListView.builder(
+                                      scrollDirection: Axis.horizontal,
+                                      shrinkWrap: true, //important
+                                      physics: BouncingScrollPhysics(),
+                                      itemCount: snapshot.data!.docs.length,
+                                      itemBuilder: (context, index) {
+                                        Category model = Category.fromJson(
+                                            snapshot.data!.docs[index].data());
+                                        return CategoryDesignWidget(
+                                          model: model,
+                                          context: context,
+                                        );
+                                      }),
+                                );
+                        }),
+                  ),
                 ],
               )
-        
-        
-        
             ],
           ),
         ));
