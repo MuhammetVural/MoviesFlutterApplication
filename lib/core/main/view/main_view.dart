@@ -57,7 +57,8 @@ class _MainViewState extends State<MainView> {
                               },
                               icon: const Icon(Icons.menu));
                         }),
-                        const Text(
+                         Text(
+                         // sharedPreferences!.getString("name") ?? 'Null',
                           "Sezin Karagün",
                           style: TextStyle(
                               color: Colors.black,
