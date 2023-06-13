@@ -10,6 +10,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../../extensions/global.dart';
 import '../../extensions/my_drawer.dart';
 import '../../extensions/widgets/error_dialog.dart';
+import '../../extensions/widgets/loading_dialog.dart';
+import '../main/view/main_view.dart';
 import 'models/person_model.dart';
 
 class ProfileView extends StatefulWidget {
@@ -34,6 +36,15 @@ class _ProfileViewState extends State<ProfileView> {
   }
 
   Future<void> formValidation() async {
+    showDialog(
+        context: context,
+        builder: (c) {
+          {
+            return const LoadingDialog(
+              message: "Updating Photo",
+            );
+          }
+        });
     String fileName = DateTime.now().microsecondsSinceEpoch.toString();
     fStorage.Reference reference =
         fStorage.FirebaseStorage.instance.ref().child('users').child(fileName);
@@ -41,6 +52,10 @@ class _ProfileViewState extends State<ProfileView> {
     fStorage.TaskSnapshot taskSnapshot = await uploadTask.whenComplete(() {});
     await taskSnapshot.ref.getDownloadURL().then((url) {
       userImageUrl = url;
+      Navigator.pop(context);
+      //send user to homePage
+      Route newRoute = MaterialPageRoute(builder: (c) => const MainView());
+      Navigator.pushReplacement(context, newRoute);
       saveDataToFirestore();
     });
 
@@ -53,7 +68,7 @@ class _ProfileViewState extends State<ProfileView> {
         .doc(sharedPreferences!.getString("uid"))
         .set({
       "userAvatarUrl": userImageUrl,
-    });
+    }, SetOptions(merge: true));
     Fluttertoast.showToast(msg: 'Success');
 
     //save data locally
@@ -94,7 +109,10 @@ class _ProfileViewState extends State<ProfileView> {
                       ),
                     ],
                   ),
-                  const CircleAvatar()
+                  CircleAvatar(
+                    backgroundImage:
+                        NetworkImage(sharedPreferences!.getString("photoUrl")!),
+                  )
                 ],
               ),
             ),
