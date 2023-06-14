@@ -23,11 +23,17 @@ class _AllCategoryWidgetState extends State<AllCategoryWidget> {
             MaterialPageRoute(
                 builder: (context) => CategoryScreen(model: widget.model)));
       },
-      child: Padding(
-        padding: const EdgeInsets.only(left: 20),
-        child: CircleAvatar(
-          radius: 60,
-          backgroundImage: NetworkImage(widget.model!.imgUrl!),
+      child: AspectRatio(
+        aspectRatio: 16 / 9,
+        child: Container(
+          margin: EdgeInsets.only(bottom: 18, top: 18),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(2),
+            image: DecorationImage(
+              image: NetworkImage(widget.model!.imgUrl!),
+              fit: BoxFit.cover,
+            ),
+          ),
         ),
       ),
     );
