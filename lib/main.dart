@@ -5,6 +5,7 @@ import 'package:movie_flutter_application/core/auth/register/view/register_view.
 import 'package:movie_flutter_application/core/main/view/main_view.dart';
 import 'package:movie_flutter_application/core/splash/splash_view.dart';
 
+import 'core/search/search_view.dart';
 import 'firebase_options.dart';
 
 void main() async {
@@ -27,6 +28,6 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),
-        home: const SplashView());
+        home: const SearchView());
   }
 }
