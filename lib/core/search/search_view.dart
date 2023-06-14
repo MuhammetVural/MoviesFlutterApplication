@@ -127,7 +127,38 @@ class _SearchViewState extends State<SearchView> {
                       Icon(Icons.assessment),
                     ],
                   ),
-                  
+                  SizedBox(
+                    height: 150,
+                    child: StreamBuilder(
+                        stream: FirebaseFirestore.instance
+                            .collection("romantic")
+                            .snapshots(),
+                        builder: (context, snapshot) {
+                          return !snapshot.hasData
+                              ? Padding(
+                                  padding: EdgeInsets.all(0),
+                                  child: LinearProgressIndicator(),
+                                )
+                              : Container(
+                                  child: ListView.builder(
+                                      scrollDirection: Axis.horizontal,
+                                      shrinkWrap: true, //important
+                                      physics: BouncingScrollPhysics(),
+                                      itemCount: snapshot.data!.docs.length,
+                                      itemBuilder: (context, index) {
+                                        Category model = Category.fromJson(
+                                            snapshot.data!.docs[index].data());
+                                        return CategoryDesignWidget(
+                                          model: model,
+                                          context: context,
+                                        );
+                                      }),
+                                );
+                        }),
+                  ),
+                  SizedBox(
+                    height: 15,
+                  ),
                 ],),
               )
               ],
