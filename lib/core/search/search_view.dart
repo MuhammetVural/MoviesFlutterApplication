@@ -16,9 +16,30 @@ class SearchView extends StatefulWidget {
   State<SearchView> createState() => _SearchViewState();
 }
 
-final TextEditingController _searchController = TextEditingController();
+
 
 class _SearchViewState extends State<SearchView> {
+  String name = "";
+
+final TextEditingController _searchController = TextEditingController();
+
+@override
+void initState() {
+  super.initState();
+  _searchController.addListener(_onSearchChanged);
+}
+void dispose(){
+  _searchController.removeListener(_onSearchChanged);
+  _searchController.dispose();
+}
+
+_onSearchChanged(){
+  print(_searchController.text);
+}
+
+
+
+
   void updateList(String value) {
     setState(() {
       
@@ -79,6 +100,11 @@ class _SearchViewState extends State<SearchView> {
               Padding(
                 padding: EdgeInsets.only(left: 30, right: 30, bottom: 20),
                 child: TextField(
+                  onChanged: (val) {
+                    setState(() {
+                      name = val;
+                    });
+                  },
                   controller: _searchController,
                   cursorColor: Colors.grey,
                   style: TextStyle(
@@ -125,9 +151,14 @@ class _SearchViewState extends State<SearchView> {
                     SizedBox(
                       height: 500,
                       child: StreamBuilder(
-                          stream: FirebaseFirestore.instance
+                          stream: (name != "" && name != null) ?
+                          FirebaseFirestore.instance
                               .collection("allcategory")
-                              .snapshots(),
+                              .where("allKeywords", arrayContains: name)
+                              .snapshots()
+                              :FirebaseFirestore.instance
+                              .collection("allcategory")
+                              .snapshots() ,
                           builder: (context, snapshot) {
                             return !snapshot.hasData
                                 ? Padding(
