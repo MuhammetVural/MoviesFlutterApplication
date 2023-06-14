@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:movie_flutter_application/core/main/models/category_model.dart';
 import 'package:movie_flutter_application/extensions/global.dart';
 import 'package:movie_flutter_application/extensions/my_drawer.dart';
+import 'package:movie_flutter_application/extensions/widgets/all_category_widget.dart';
 
 import '../../../extensions/widgets/category_design_widget.dart';
 import '../profile/profile_view.dart';
@@ -58,7 +59,7 @@ class _SearchViewState extends State<SearchView> {
                               icon: const Icon(Icons.menu));
                         }),
                         Text(
-                         // sharedPreferences!.getString("name") ?? 'Null',
+                          // sharedPreferences!.getString("name") ?? 'Null',
                           "Sezin Karagün",
                           style: TextStyle(
                               color: Colors.black,
@@ -76,8 +77,7 @@ class _SearchViewState extends State<SearchView> {
                         },
                         child: CircleAvatar(
                             //backgroundImage: NetworkImage(sharedPreferences!.getString("photoUrl")!)
-                                )
-                                )
+                            ))
                   ],
                 ),
               ),
@@ -118,50 +118,57 @@ class _SearchViewState extends State<SearchView> {
                 height: 40,
               ),
               Padding(
-                padding: const EdgeInsets.only(left: 35.0, right: 35, bottom: 40),
-                child: Column(children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text("Sort by", style: TextStyle(color: Colors.grey, fontSize: 16),),
-                      Icon(Icons.assessment),
-                    ],
-                  ),
-                  SizedBox(
-                    height: 150,
-                    child: StreamBuilder(
-                        stream: FirebaseFirestore.instance
-                            .collection("romantic")
-                            .snapshots(),
-                        builder: (context, snapshot) {
-                          return !snapshot.hasData
-                              ? Padding(
-                                  padding: EdgeInsets.all(0),
-                                  child: LinearProgressIndicator(),
-                                )
-                              : Container(
-                                  child: ListView.builder(
-                                      scrollDirection: Axis.horizontal,
-                                      shrinkWrap: true, //important
-                                      physics: BouncingScrollPhysics(),
-                                      itemCount: snapshot.data!.docs.length,
-                                      itemBuilder: (context, index) {
-                                        Category model = Category.fromJson(
-                                            snapshot.data!.docs[index].data());
-                                        return CategoryDesignWidget(
-                                          model: model,
-                                          context: context,
-                                        );
-                                      }),
-                                );
-                        }),
-                  ),
-                  SizedBox(
-                    height: 15,
-                  ),
-                ],),
+                padding:
+                    const EdgeInsets.only(left: 35.0, right: 35, bottom: 40),
+                child: Column(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          "Sort by",
+                          style: TextStyle(color: Colors.grey, fontSize: 16),
+                        ),
+                        Icon(Icons.assessment),
+                      ],
+                    ),
+                    SizedBox(
+                      height: 500,
+                      child: StreamBuilder(
+                          stream: FirebaseFirestore.instance
+                              .collection("allcategory")
+                              .snapshots(),
+                          builder: (context, snapshot) {
+                            return !snapshot.hasData
+                                ? Padding(
+                                    padding: EdgeInsets.all(0),
+                                    child: LinearProgressIndicator(),
+                                  )
+                                : Container(
+                                    child: ListView.builder(
+                                        scrollDirection: Axis.vertical,
+                                        shrinkWrap: true, //important
+                                        physics: BouncingScrollPhysics(),
+                                        itemCount: snapshot.data!.docs.length,
+                                        itemBuilder: (context, index) {
+                                          Category model = Category.fromJson(
+                                              snapshot.data!.docs[index]
+                                                  .data());
+                                          return AllCategoryWidget(
+                                            model: model,
+                                            context: context,
+                                          );
+                                        }),
+                                  );
+                          }),
+                    ),
+                    SizedBox(
+                      height: 15,
+                    ),
+                  ],
+                ),
               )
-              ],
+            ],
           ),
         ));
     // child: ElevatedButton(
