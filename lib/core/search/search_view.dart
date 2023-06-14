@@ -7,6 +7,7 @@ import 'package:movie_flutter_application/extensions/widgets/all_category_widget
 
 import '../../../extensions/widgets/category_design_widget.dart';
 import '../profile/profile_view.dart';
+import 'models/search_model.dart';
 
 class SearchView extends StatefulWidget {
   const SearchView({super.key});
@@ -18,24 +19,12 @@ class SearchView extends StatefulWidget {
 final TextEditingController _searchController = TextEditingController();
 
 class _SearchViewState extends State<SearchView> {
-  List symptoms = [
-    "Domates",
-    "Fesleğen",
-    "Gül",
-    "Lale",
-    "Biber",
-    "Nergiz",
-    "Karpuz",
-    "Kabak",
-  ];
-  List img = [
-    "d1.jpg",
-    "d2.jpg",
-    "d3.jpg",
-    "d4.jpg",
-    "d5.jpg",
-    "d6.jpg",
-  ];
+  void updateList(String value) {
+    setState(() {
+      
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -90,6 +79,7 @@ class _SearchViewState extends State<SearchView> {
               Padding(
                 padding: EdgeInsets.only(left: 30, right: 30, bottom: 20),
                 child: TextField(
+                  controller: _searchController,
                   cursorColor: Colors.grey,
                   style: TextStyle(
                     color: Colors.black54.withOpacity(0.8),
@@ -111,7 +101,7 @@ class _SearchViewState extends State<SearchView> {
                           style: BorderStyle.none,
                         )),
                   ),
-                  controller: _searchController,
+                  
                 ),
               ),
               const SizedBox(
